@@ -58,6 +58,8 @@ policies, either expressed or implied, of the FreeBSD Project.
 #define WHITE     0x07
 
 
+uint8_t ifInterrupt;
+
 // Initialize Bump sensors using interrupt
 // Make six from Port 4 input pins
 // Activate interface pull-up
@@ -117,7 +119,7 @@ void PORT4_IRQHandler(void){
                 // turn off the coloured LED
                 Port2_Output(0);
                 // Stop for 1000ms
-                Motor_StopSimple(1000);
+                Motor_StopSimple(100);
                 // Change the coloured LED into yellow (turn left)
                 Port2_Output(YELLOW);
                 // Make a left turn at 500 duty for 100ms
@@ -125,7 +127,7 @@ void PORT4_IRQHandler(void){
                 // turn off the coloured LED
                 Port2_Output(0);
                 // Stop for 1000ms
-                Motor_StopSimple(1000);
+                Motor_StopSimple(100);
             }
             
           break;
@@ -139,7 +141,7 @@ void PORT4_IRQHandler(void){
                 // turn off the coloured LED
                 Port2_Output(0);
                 // Stop for 1000ms
-                Motor_StopSimple(1000);
+                Motor_StopSimple(100);
                 // Change the coloured LED into yellow (turn left)
                 Port2_Output(YELLOW);
                 // Make a left turn at 500 duty for 200ms
@@ -147,7 +149,7 @@ void PORT4_IRQHandler(void){
                 // turn off the coloured LED
                 Port2_Output(0);
                 // Stop for 1000ms
-                Motor_StopSimple(1000);
+                Motor_StopSimple(100);
             }
           break;
         case 0x08: // Bump switch 3
@@ -160,7 +162,7 @@ void PORT4_IRQHandler(void){
                 // turn off the coloured LED
                 Port2_Output(0);
                 // Stop for 1000ms
-                Motor_StopSimple(1000);
+                Motor_StopSimple(100);
                 // Change the coloured LED into yellow (turn left)
                 Port2_Output(YELLOW);
                 // Make a left turn at 500 duty for 300ms
@@ -168,7 +170,7 @@ void PORT4_IRQHandler(void){
                 // turn off the coloured LED
                 Port2_Output(0);
                 // Stop for 1000ms
-                Motor_StopSimple(1000);
+                Motor_StopSimple(100);
             }
           break;
         case 0x0c: // Bump switch 4
@@ -181,7 +183,7 @@ void PORT4_IRQHandler(void){
                 // turn off the coloured LED
                 Port2_Output(0);
                 // Stop for 1000ms
-                Motor_StopSimple(1000);
+                Motor_StopSimple(100);
                 // Change the coloured LED into blue (turn right)
                 Port2_Output(BLUE);
                 // Make a left turn at 500 duty for 300ms
@@ -189,7 +191,7 @@ void PORT4_IRQHandler(void){
                 // turn off the coloured LED
                 Port2_Output(0);
                 // Stop for 1000ms
-                Motor_StopSimple(1000);
+                Motor_StopSimple(100);
             }
           break;
         case 0x0e: // Bump switch 5
@@ -202,7 +204,7 @@ void PORT4_IRQHandler(void){
                 // turn off the coloured LED
                 Port2_Output(0);
                 // Stop for 1000ms
-                Motor_StopSimple(1000);
+                Motor_StopSimple(100);
                 // Change the coloured LED into blue (turn right)
                 Port2_Output(BLUE);
                // Make a left turn at 500 duty for 200ms
@@ -210,7 +212,7 @@ void PORT4_IRQHandler(void){
                 // turn off the coloured LED
                 Port2_Output(0);
                 // Stop for 1000ms
-                Motor_StopSimple(1000);
+                Motor_StopSimple(100);
             }
           break;
         case 0x10: // Bump switch 6
@@ -223,7 +225,7 @@ void PORT4_IRQHandler(void){
                 // turn off the coloured LED
                 Port2_Output(0);
                 // Stop for 1000ms
-                Motor_StopSimple(1000);
+                Motor_StopSimple(100);
                 // Change the coloured LED into blue (turn right)
                 Port2_Output(BLUE);
                 // Make a left turn at 500 duty for 100ms
@@ -231,7 +233,7 @@ void PORT4_IRQHandler(void){
                 // turn off the coloured LED
                 Port2_Output(0);
                 // Stop for 1000ms
-                Motor_StopSimple(1000);
+                Motor_StopSimple(100);
             }
           break;
 
@@ -371,10 +373,11 @@ void Switch_Init(void){
 #define SW2IN ((*((volatile uint8_t *)(0x42098010)))^1) // input: switch SW2
 #define REDLED (*((volatile uint8_t *)(0x42098040)))    // output: red LED
 
+//uint8_t ifInterrupt;
+
 int main(void){
 
   uint8_t switchFlag;
-  uint8_t ifInterrupt;
   uint8_t status;
 
   Clock_Init48MHz();        // Initialise clock with 48MHz frequency
