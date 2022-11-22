@@ -58,7 +58,11 @@ policies, either expressed or implied, of the FreeBSD Project.
 #define WHITE     0x07
 
 
+// ifInterrupt 1 stands for interrupt mode 1
 uint8_t ifInterrupt;
+
+// switchFlag 1 stands for pulling mode 1
+uint8_t switchFlag;
 
 // Initialize Bump sensors using interrupt
 // Make six from Port 4 input pins
@@ -128,6 +132,8 @@ void PORT4_IRQHandler(void){
                 Port2_Output(0);
                 // Stop for 1000ms
                 Motor_StopSimple(100);
+            } else if (ifInterrupt == 0) {
+                Motor_StopSimple(100);
             }
             
           break;
@@ -150,6 +156,8 @@ void PORT4_IRQHandler(void){
                 Port2_Output(0);
                 // Stop for 1000ms
                 Motor_StopSimple(100);
+            } else if (ifInterrupt == 0) {
+                Motor_StopSimple(100);
             }
           break;
         case 0x08: // Bump switch 3
@@ -170,6 +178,8 @@ void PORT4_IRQHandler(void){
                 // turn off the coloured LED
                 Port2_Output(0);
                 // Stop for 1000ms
+                Motor_StopSimple(100);
+            } else if (ifInterrupt == 0) {
                 Motor_StopSimple(100);
             }
           break;
@@ -192,6 +202,8 @@ void PORT4_IRQHandler(void){
                 Port2_Output(0);
                 // Stop for 1000ms
                 Motor_StopSimple(100);
+            } else if (ifInterrupt == 0) {
+                Motor_StopSimple(100);
             }
           break;
         case 0x0e: // Bump switch 5
@@ -213,6 +225,8 @@ void PORT4_IRQHandler(void){
                 Port2_Output(0);
                 // Stop for 1000ms
                 Motor_StopSimple(100);
+            } else if (ifInterrupt == 0) {
+                Motor_StopSimple(100);
             }
           break;
         case 0x10: // Bump switch 6
@@ -233,6 +247,8 @@ void PORT4_IRQHandler(void){
                 // turn off the coloured LED
                 Port2_Output(0);
                 // Stop for 1000ms
+                Motor_StopSimple(100);
+            } else if (ifInterrupt == 0) {
                 Motor_StopSimple(100);
             }
           break;
@@ -263,82 +279,93 @@ uint8_t Bump_Read_Input(void){
 //              1) the polling method is only useful for small program
 //              2) the input mask in switch case (for polling method) is DIFFERENT from the 
 //                 Nested Vectored Interrupt Controller (NVIC) which used in interrupt method.
-void checkbumpswitch(uint8_t status, uint8_t switchFlag)
-{
+void checkbumpswitch(uint8_t status, uint8_t switchFlag){
     switch(status){
       //case 0x02: // Bump switch 1 (for interrupt vector)
         case 0x6D: // Bump 1
 //            EnableInterrupts();
 //            DisableInterrupts();
-        if (switchFlag == 1) {
-          // mode 1
-          Motor_StopSimple(100);
-        } else if (switchFlag == 0) {
-          // mode 2
-          Motor_BackwardSimple(500, 200); 	// Move backward at 500 duty for 200ms
-          Motor_LeftSimple(500, 100);
-        }
-        break;
+            if (switchFlag == 1) {
+                // mode 1
+                Motor_StopSimple(100);
+            }
+            else if (switchFlag == 0) {
+                // mode 2
+                Motor_BackwardSimple(500, 200); 	// Move backward at 500 duty for 200ms
+                Motor_LeftSimple(500, 100);
+            }
+            break;
+
       //case 0x06: // Bump switch 2 (for interrupt vector)
         case 0xAD: // Bump 2
             if (switchFlag == 1) {
-              // mode 1
-              Motor_StopSimple(100);
-            } else if (switchFlag == 0) {
-              Motor_BackwardSimple(500, 200);   // Move backward at 500 duty for 200ms
-              Motor_LeftSimple(500, 200);
+
+                // mode 1
+                Motor_StopSimple(100);
             }
-        break;
+            else if (switchFlag == 0) {
+                Motor_BackwardSimple(500, 200);   // Move backward at 500 duty for 200ms
+                Motor_LeftSimple(500, 200);
+            }
+            break;
+
       //case 0x08: // Bump switch 3 (for interrupt vector)
         case 0xCD: // Bump 3
             if (switchFlag == 1) {
-              // mode 1
-              Motor_StopSimple(100);
-            } else if (switchFlag == 0) {
+
+                // mode 1
+                Motor_StopSimple(100);
+            }
+            else if (switchFlag == 0) {
                 Motor_BackwardSimple(500, 200);   // Move backward at 500 duty for 200ms
                 Motor_LeftSimple(500, 300);
             }
-        break;
+            break;
+
       //case 0x0C: // Bump switch 4 (for interrupt vector)
         case 0xE5: // Bump 4
             if (switchFlag == 1) {
-              // mode 1
-              Motor_StopSimple(100);
-            } else if (switchFlag == 0) {
+                // mode 1
+                Motor_StopSimple(100);
+            }
+            else if (switchFlag == 0) {
                 Motor_BackwardSimple(500, 200);   // Move backward at 500 duty for 200ms
                 Motor_RightSimple(500, 300);
             }
-        break;
+            break;
       //case 0x0E: // Bump switch 5 (for interrupt vector)
         case 0xE9: // Bump 5
             if (switchFlag == 1) {
-              // mode 1
-              Motor_StopSimple(100);
-            } else if (switchFlag == 0) {
+                // mode 1
+                Motor_StopSimple(100);
+            }
+            else if (switchFlag == 0) {
                 Motor_BackwardSimple(500, 200);   // Move backward at 500 duty for 200ms
                 Motor_RightSimple(500, 200);
             }
-        break;
+            break;
+
       //case 0x10: // Bump switch 6 (for interrupt vector)
         case 0xEC: // Bump 6
             if (switchFlag == 1) {
-              // mode 1
-               Motor_StopSimple(100);
-            } else if (switchFlag == 0) {
+                // mode 1
+                Motor_StopSimple(100);
+            }
+            else if (switchFlag == 0) {
                 Motor_BackwardSimple(500, 200);   // Move backward at 500 duty for 200ms
                 Motor_RightSimple(500, 100);
             }
-        break;
-      case 0xED: // neither switch pressed
+            break;
 
-        break;
+        case 0xED: // neither switch pressed
+            break;
     }
 }
 
 void Port1_Init(void){
-  P1->SEL0 &= ~0x01;
-  P1->SEL1 &= ~0x01;        // configure P1.0 as GPIO
-  P1->DIR |= 0x01;          //make P1.0 out, the built-in LED1
+    P1->SEL0 &= ~0x01;
+    P1->SEL1 &= ~0x01;        // configure P1.0 as GPIO
+    P1->DIR |= 0x01;          //make P1.0 out, the built-in LED1
 }
 
 void Port2_Init(void){
@@ -373,11 +400,8 @@ void Switch_Init(void){
 #define SW2IN ((*((volatile uint8_t *)(0x42098010)))^1) // input: switch SW2
 #define REDLED (*((volatile uint8_t *)(0x42098040)))    // output: red LED
 
-//uint8_t ifInterrupt;
 
 int main(void){
-
-  uint8_t switchFlag;
   uint8_t status;
 
   Clock_Init48MHz();        // Initialise clock with 48MHz frequency
@@ -410,39 +434,76 @@ int main(void){
 //    __no_operation();		// the code will run without operation
     // This section is used for Example 2 (section 5.8.2)
       if (SW1IN == 1) {
-          switchFlag = 1;
-          while(1) {
-            Motor_ForwardSimple(1000,1);
-            status = Bump_Read_Input();
-            if (status == 0x6D || status == 0xAD || status == 0xCD || status == 0xE5 || status == 0xE9 || status == 0xEC) {
-                checkbumpswitch(status, switchFlag);
-                break;
+          if (SW1IN == 1 && SW2IN == 1) {
+              // interrupt
+              ifInterrupt = 1;
+              while(1) {
+                  Motor_ForwardSimple(1000,1);
+                  EnableInterrupts();
+                  if (SW2IN == 1) {
+                      ifInterrupt = 0;
+                      break;
+                  }
+              }
+          } else {
+              // pulling
+              switchFlag = 1;
+              while(1) {
+                Motor_ForwardSimple(1000,1);
+                status = Bump_Read_Input();
+                if (status == 0x6D || status == 0xAD || status == 0xCD || status == 0xE5 || status == 0xE9 || status == 0xEC) {
+                    checkbumpswitch(status, switchFlag);
+                    break;
+                }
+
+                if (SW2IN == 1) {
+                    // switch to the mode 2
+                    break;
+                }
+              }
+          }
+    } else if (SW2IN == 1) {
+        // mode 2
+        if (SW1IN == 1 && SW2IN == 1) {
+            // interrupt
+            ifInterrupt = 0;
+            while(1) {
+                Motor_ForwardSimple(1000,1);
+                EnableInterrupts();
+                if (SW1IN == 1) {
+                    ifInterrupt = 0;
+                    break;
+                }
+            }
+        } else {
+            // pulling
+            switchFlag = 0;
+              while(1) {
+                Motor_ForwardSimple(1000,1);
+                status = Bump_Read_Input();
+                if (status == 0x6D || status == 0xAD || status == 0xCD || status == 0xE5 || status == 0xE9 || status == 0xEC) {
+                    checkbumpswitch(status, switchFlag);
+                }
+
+                if (SW1IN == 1) {
+                    break;
+                }
             }
         }
     }
-//      else if (SW2IN == 1) {
-//        // TODO: for switch 2 to detect bump
-//        switchFlag = 0;
-//          while(1) {
+
+    // TODO: Interrupt
+//    if (SW2IN == 1) {
+//        ifInterrupt = 1;
+//        while(ifInterrupt) {
 //            Motor_ForwardSimple(1000,1);
-//            status = Bump_Read_Input();
-//            if (status == 0x6D || status == 0xAD || status == 0xCD || status == 0xE5 || status == 0xE9 || status == 0xEC) {
-//                checkbumpswitch(status, switchFlag);
+//            EnableInterrupts();
+//            if (SW1IN == 1) {
+//                ifInterrupt = 0;
+//                break;
 //            }
 //        }
 //    }
-
-    // TODO: Interrupt
-    if (SW2IN == 1) {
-        ifInterrupt = 1;
-        while(ifInterrupt) {
-            Motor_ForwardSimple(1000,1);
-            EnableInterrupts();
-            if (SW1IN == 1) {
-                break;
-            }
-        }
-    }
 
 	
 	// This section is used for Example 3 (section 5.8.3)
