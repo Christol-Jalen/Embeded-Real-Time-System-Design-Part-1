@@ -58,7 +58,7 @@ policies, either expressed or implied, of the FreeBSD Project.
 #define WHITE     0x07
 
 
-// ifInterrupt 1 stands for interrupt mode 1
+// ifInterrupt 0 stands for interrupt mode 1
 uint8_t ifInterrupt;
 
 // switchFlag 1 stands for pulling mode 1
@@ -434,14 +434,15 @@ int main(void){
 //    __no_operation();		// the code will run without operation
     // This section is used for Example 2 (section 5.8.2)
       if (SW1IN == 1) {
+          // mode 1
           if (SW1IN == 1 && SW2IN == 1) {
+              REDLED = !REDLED;
               // interrupt
               ifInterrupt = 1;
               while(1) {
                   Motor_ForwardSimple(1000,1);
                   EnableInterrupts();
                   if (SW2IN == 1) {
-                      ifInterrupt = 0;
                       DisableInterrupts();
                       break;
                   }
@@ -467,13 +468,13 @@ int main(void){
       if (SW2IN == 1) {
         // mode 2
         if (SW1IN == 1 && SW2IN == 1) {
+            REDLED = !REDLED;
             // interrupt
             ifInterrupt = 0;
             while(1) {
                 Motor_ForwardSimple(1000,1);
                 EnableInterrupts();
                 if (SW1IN == 1) {
-                    ifInterrupt = 0;
                     DisableInterrupts();
                     break;
                 }
@@ -494,19 +495,6 @@ int main(void){
             }
         }
     }
-
-    // TODO: Interrupt
-//    if (SW2IN == 1) {
-//        ifInterrupt = 1;
-//        while(ifInterrupt) {
-//            Motor_ForwardSimple(1000,1);
-//            EnableInterrupts();
-//            if (SW1IN == 1) {
-//                ifInterrupt = 0;
-//                break;
-//            }
-//        }
-//    }
 
 	
 	// This section is used for Example 3 (section 5.8.3)
