@@ -442,6 +442,7 @@ int main(void){
                   EnableInterrupts();
                   if (SW2IN == 1) {
                       ifInterrupt = 0;
+                      DisableInterrupts();
                       break;
                   }
               }
@@ -462,7 +463,8 @@ int main(void){
                 }
               }
           }
-    } else if (SW2IN == 1) {
+    }
+      if (SW2IN == 1) {
         // mode 2
         if (SW1IN == 1 && SW2IN == 1) {
             // interrupt
@@ -472,6 +474,7 @@ int main(void){
                 EnableInterrupts();
                 if (SW1IN == 1) {
                     ifInterrupt = 0;
+                    DisableInterrupts();
                     break;
                 }
             }
