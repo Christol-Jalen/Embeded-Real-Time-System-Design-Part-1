@@ -64,6 +64,11 @@ uint8_t ifInterrupt;
 // switchFlag 1 stands for pulling mode 1
 uint8_t switchFlag;
 
+// bit-banded addresses, positive logic
+#define SW1IN ((*((volatile uint8_t *)(0x42098004)))^1)
+#define SW2IN ((*((volatile uint8_t *)(0x42098010)))^1) // input: switch SW2
+#define REDLED (*((volatile uint8_t *)(0x42098040)))    // output: red LED
+
 // Initialize Bump sensors using interrupt
 // Make six from Port 4 input pins
 // Activate interface pull-up
@@ -133,7 +138,12 @@ void PORT4_IRQHandler(void){
                 // Stop for 1000ms
                 Motor_StopSimple(100);
             } else if (ifInterrupt == 0) {
-                Motor_StopSimple(100);
+                while (1) {
+                    Motor_StopSimple(100);
+                    if (SW1IN == 1) {
+                        break;
+                    }
+                }
             }
             
           break;
@@ -157,7 +167,12 @@ void PORT4_IRQHandler(void){
                 // Stop for 1000ms
                 Motor_StopSimple(100);
             } else if (ifInterrupt == 0) {
-                Motor_StopSimple(100);
+                while (1) {
+                    Motor_StopSimple(100);
+                    if (SW1IN == 1) {
+                        break;
+                    }
+                }
             }
           break;
         case 0x08: // Bump switch 3
@@ -180,7 +195,12 @@ void PORT4_IRQHandler(void){
                 // Stop for 1000ms
                 Motor_StopSimple(100);
             } else if (ifInterrupt == 0) {
-                Motor_StopSimple(100);
+                while (1) {
+                    Motor_StopSimple(100);
+                    if (SW1IN == 1) {
+                        break;
+                    }
+                }
             }
           break;
         case 0x0c: // Bump switch 4
@@ -203,7 +223,12 @@ void PORT4_IRQHandler(void){
                 // Stop for 1000ms
                 Motor_StopSimple(100);
             } else if (ifInterrupt == 0) {
-                Motor_StopSimple(100);
+                while (1) {
+                    Motor_StopSimple(100);
+                    if (SW1IN == 1) {
+                        break;
+                    }
+                }
             }
           break;
         case 0x0e: // Bump switch 5
@@ -226,7 +251,12 @@ void PORT4_IRQHandler(void){
                 // Stop for 1000ms
                 Motor_StopSimple(100);
             } else if (ifInterrupt == 0) {
-                Motor_StopSimple(100);
+                while (1) {
+                    Motor_StopSimple(100);
+                    if (SW1IN == 1) {
+                        break;
+                    }
+                }
             }
           break;
         case 0x10: // Bump switch 6
@@ -249,7 +279,12 @@ void PORT4_IRQHandler(void){
                 // Stop for 1000ms
                 Motor_StopSimple(100);
             } else if (ifInterrupt == 0) {
-                Motor_StopSimple(100);
+                while (1) {
+                    Motor_StopSimple(100);
+                    if (SW1IN == 1) {
+                        break;
+                    }
+                }
             }
           break;
 
@@ -394,11 +429,6 @@ void Switch_Init(void){
     P1->REN |= 0x12;        // enable pull resistors on P1.4 and P1.1
     P1->OUT |= 0x12;        // P1.4 and P1.1 are pull-up
 }
-
-// bit-banded addresses, positive logic
-#define SW1IN ((*((volatile uint8_t *)(0x42098004)))^1)
-#define SW2IN ((*((volatile uint8_t *)(0x42098010)))^1) // input: switch SW2
-#define REDLED (*((volatile uint8_t *)(0x42098040)))    // output: red LED
 
 
 int main(void){
