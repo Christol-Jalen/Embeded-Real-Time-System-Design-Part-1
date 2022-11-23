@@ -105,22 +105,22 @@ void PORT4_IRQHandler(void){
     // Interrupt Vector of Port4
       status = P4->IV;      // 2*(n+1) where n is highest priority
 
-	  // The case used are the interrupt vector of P4->IV
-	  // For example, the bump switch 3 is connected to P4.3
-	  // (in other words, Port 4 at pin 3),
-	  // thus the status of case would be:
-	  // status = 2*(pin number + 1)
-	  //        = 2*(pin_3 + 1)
-	  //        = 2*(3 + 1)
-	  //        = 2*(4)
-	  //        = 8
-	  // in hex = 0x08
-	  // (*NOTE: in this code only bump switch 3 has been calculated,
-	  //         please figure out the other bump switches)
+      // The case used are the interrupt vector of P4->IV
+      // For example, the bump switch 3 is connected to P4.3
+      // (in other words, Port 4 at pin 3),
+      // thus the status of case would be:
+      // status = 2*(pin number + 1)
+      //        = 2*(pin_3 + 1)
+      //        = 2*(3 + 1)
+      //        = 2*(4)
+      //        = 8
+      // in hex = 0x08
+      // (*NOTE: in this code only bump switch 3 has been calculated,
+      //         please figure out the other bump switches)
       switch(status){
 
         case 0x02: // Bump switch 1
-		
+
             if (Mode == 2) {
                 // Change the coloured LED into green (backward)
                 Port2_Output(GREEN);
@@ -142,7 +142,7 @@ void PORT4_IRQHandler(void){
             } else if (Mode == 1) {
                 while (1) {
                     Motor_StopSimple(100);
-                    if (SW2IN) {
+                    if (SW1IN || SW2IN) {
                         break;
                     }
                 }
@@ -328,7 +328,7 @@ void checkbumpswitch(uint8_t status, uint8_t Mode){
             }
             else if (Mode == 2) {
                 // mode 2
-                Motor_BackwardSimple(500, 200); 	// Move backward at 500 duty for 200ms
+                Motor_BackwardSimple(500, 200);     // Move backward at 500 duty for 200ms
                 Motor_LeftSimple(500, 100);
             }
             break;
@@ -463,7 +463,7 @@ int main(void){
     // Run forever
     while(1){
         // This section is used for Example 1 (seciton 5.8.1)
-        //    __no_operation();		// the code will run without operation
+        //    __no_operation();     // the code will run without operation
         // This section is used for Example 2 (section 5.8.2)
         if (SW1IN && SW2IN) {
             REDLED = !REDLED;
@@ -527,14 +527,14 @@ int main(void){
             }
         }
         Motor_StopSimple(1);
-	
-	// This section is used for Example 3 (section 5.8.3)
-		// Move forward with 500 duty but can run with any number for time_ms,
-		// in this case, the robot will move infinitely because of the while loop,
-		// (although the time_ms used is 1)
-	/*
-		Motor_ForwardSimple(500, 1);
-	*/
+
+    // This section is used for Example 3 (section 5.8.3)
+        // Move forward with 500 duty but can run with any number for time_ms,
+        // in this case, the robot will move infinitely because of the while loop,
+        // (although the time_ms used is 1)
+    /*
+        Motor_ForwardSimple(500, 1);
+    */
 
     }
 }
