@@ -142,7 +142,7 @@ void PORT4_IRQHandler(void){
             } else if (Mode == 1) {
                 while (1) {
                     Motor_StopSimple(100);
-                    if (SW1IN || SW2IN) {
+                    if (SW1IN) {
                         break;
                     }
                 }
@@ -171,7 +171,7 @@ void PORT4_IRQHandler(void){
             } else if (Mode == 1) {
                 while (1) {
                     Motor_StopSimple(100);
-                    if (SW2IN) {
+                    if (SW1IN) {
                         break;
                     }
                 }
@@ -199,7 +199,7 @@ void PORT4_IRQHandler(void){
             } else if (Mode == 1) {
                 while (1) {
                     Motor_StopSimple(100);
-                    if (SW2IN) {
+                    if (SW1IN) {
                         break;
                     }
                 }
@@ -227,7 +227,7 @@ void PORT4_IRQHandler(void){
             } else if (Mode == 1) {
                 while (1) {
                     Motor_StopSimple(100);
-                    if (SW2IN) {
+                    if (SW1IN) {
                         break;
                     }
                 }
@@ -255,7 +255,7 @@ void PORT4_IRQHandler(void){
             } else if (Mode == 1) {
                 while (1) {
                     Motor_StopSimple(100);
-                    if (SW2IN) {
+                    if (SW1IN) {
                         break;
                     }
                 }
@@ -283,7 +283,7 @@ void PORT4_IRQHandler(void){
             } else if (Mode == 1) {
                 while (1) {
                     Motor_StopSimple(100);
-                    if (SW2IN) {
+                    if (SW1IN) {
                         break;
                     }
                 }
