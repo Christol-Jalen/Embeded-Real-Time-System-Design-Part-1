@@ -473,6 +473,7 @@ int main(void){
             }
             else { //ifInterrut == 0
                 ifInterrupt = 1;
+                __no_operation();//////
                 EnableInterrupts();
             }
         }
@@ -495,9 +496,15 @@ int main(void){
                     Motor_ForwardSimple(1000,1);
                     Motor_LeftSimple(1000, 1);
                     Motor_ForwardSimple(1000,1);
+                    __no_operation();
                     status = Bump_Read_Input();
+                    __no_operation();//////
+                    //checkbumpswitch(status, Mode);//////
+                     __no_operation();//////
                     if (status == 0x6D || status == 0xAD || status == 0xCD || status == 0xE5 || status == 0xE9 || status == 0xEC) {
+                        __no_operation();
                         checkbumpswitch(status, Mode);
+                        __no_operation();
                         break;
                     }
 
