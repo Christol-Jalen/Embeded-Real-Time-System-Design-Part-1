@@ -483,14 +483,18 @@ int main(void){
             if (ifInterrupt == 1){  //Interrupt
 
                 while(1) {
-                    Motor_ForwardSimple(500,1);
+                    Motor_ForwardSimple(1000,1);
+                    Motor_LeftSimple(1000, 1);
+                    Motor_ForwardSimple(1000,1);
                     if (SW2IN) {    //switch to the mode 2
                         break;
                     }
                 }
             } else {  //ifInterrupt == 0  //Polling
                 while(1) {
-                    Motor_ForwardSimple(500,1);
+                    Motor_ForwardSimple(1000,1);
+                    Motor_LeftSimple(1000, 1);
+                    Motor_ForwardSimple(1000,1);
                     status = Bump_Read_Input();
                     if (status == 0x6D || status == 0xAD || status == 0xCD || status == 0xE5 || status == 0xE9 || status == 0xEC) {
                         checkbumpswitch(status, Mode);
