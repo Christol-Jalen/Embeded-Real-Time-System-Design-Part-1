@@ -473,8 +473,14 @@ int main(void){
             }
             else { //ifInterrut == 0
                 ifInterrupt = 1;
-                __no_operation();//////
                 EnableInterrupts();
+                __no_operation();
+            }
+            while(1) {
+                Motor_StopSimple(100);
+                if (SW1IN || SW2IN) {
+                    break;
+                }
             }
         }
 
